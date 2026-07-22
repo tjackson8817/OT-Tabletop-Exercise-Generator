@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OT Tabletop Exercise Generator — Sale Fish Marketing and Consulting</title>
+<meta name="description" content="Guided OT/ICS tabletop exercise generator: scenario library, progressive injects with discussion prompts, an objectives scorecard, and a full exportable exercise report.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<div class="status-bar">
+  <div class="brand">
+    <span class="brand-dot"></span>
+    <div>
+      <div class="brand-title">OT Tabletop Exercise Generator</div>
+      <div class="brand-text">Sale Fish Marketing and Consulting</div>
+    </div>
+  </div>
+</div>
+<div class="privacy-strip">
+  <span>&#128274; All data stays in your browser. Nothing is sent to a server.</span>
+  <span id="version-tag"></span>
+</div>
+
+<div class="app-shell">
+
+  <!-- ================= DASHBOARD ================= -->
+  <section id="screen-dashboard" class="screen active">
+    <div class="panel">
+      <div class="panel-header">
+        <div><span class="panel-eyebrow">Exercise Log</span><h2>Tabletop Exercises</h2></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-secondary" id="btn-import-json">Import (.json)</button>
+          <button class="btn btn-secondary" id="btn-export-all-json">Export All (.json)</button>
+          <button class="btn btn-primary" id="btn-new-exercise">+ New Exercise</button>
+        </div>
+      </div>
+      <input type="file" id="file-import" accept=".json" style="display:none;">
+      <div class="table-scroll">
+        <table class="data-table" id="dashboard-table">
+          <thead><tr><th>Exercise</th><th>Scenario</th><th>Industry</th><th>Facilitator</th><th>Date</th><th>Status</th><th></th></tr></thead>
+          <tbody id="dashboard-table-body"></tbody>
+        </table>
+      </div>
+      <p id="dashboard-empty-note" style="color:var(--text-secondary); display:none;">No exercises recorded yet. Click "+ New Exercise" to begin.</p>
+    </div>
+
+    <div id="program-metrics"></div>
+
+    <div class="note-box">
+      This tool structures and records a facilitated exercise — it doesn't run itself. A facilitator reads each inject aloud, leads discussion using the prompts, and records notes and assessments as the group works through the scenario.
+    </div>
+  </section>
+
+  <!-- ================= SETUP ================= -->
+  <section id="screen-setup" class="screen">
+    <div class="panel">
+      <div class="panel-header"><div><span class="panel-eyebrow">New Exercise</span><h2>Exercise Details</h2></div></div>
+      <div class="field-grid">
+        <label class="field">Exercise Title
+          <input type="text" id="input-exercise-title" placeholder="Defaults to the scenario title if left blank">
+        </label>
+        <label class="field">Facilitator
+          <input type="text" id="input-facilitator" placeholder="Name">
+        </label>
+        <label class="field">Exercise Date
+          <input type="date" id="input-exercise-date">
+        </label>
+      </div>
+      <label class="field" style="margin-top:16px;">Participants
+        <textarea id="input-participants" rows="2" placeholder="Names and roles, one per line or comma-separated"></textarea>
+      </label>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><div><span class="panel-eyebrow">Step 1</span><h2>Select Industry</h2></div></div>
+      <div class="scenario-grid" id="industry-grid"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header"><div><span class="panel-eyebrow">Step 2</span><h2>Select Scenario</h2></div></div>
+      <div class="scenario-grid" id="scenario-grid"></div>
+    </div>
+
+    <div class="btn-row split">
+      <button class="btn btn-secondary" id="btn-setup-cancel">&larr; Back to Dashboard</button>
+      <button class="btn btn-primary" id="btn-begin-exercise" disabled>Begin Exercise &rarr;</button>
+    </div>
+  </section>
+
+  <!-- ================= EXERCISE RUN ================= -->
+  <section id="screen-run" class="screen">
+    <div class="panel">
+      <div class="panel-header">
+        <div><h2 id="run-title">Exercise</h2><p id="run-subtitle" style="color:var(--text-secondary); margin:4px 0 0 0;"></p></div>
+        <button class="btn btn-secondary" id="btn-run-back-to-dashboard">Dashboard</button>
+      </div>
+      <div class="inject-progress" id="inject-progress"></div>
+      <div id="inject-container"></div>
+      <div class="btn-row split">
+        <button class="btn btn-secondary" id="btn-prev-inject">&larr; Previous Inject</button>
+        <button class="btn btn-primary" id="btn-next-inject">Next Inject &rarr;</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= WRAP-UP ================= -->
+  <section id="screen-wrapup" class="screen">
+    <div class="panel">
+      <div class="panel-header">
+        <div><span class="panel-eyebrow" id="wrapup-status-badge"></span><h2 id="wrapup-title">Exercise Wrap-Up</h2></div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn btn-secondary" id="btn-wrapup-back-to-dashboard">Dashboard</button>
+        </div>
+      </div>
+
+      <h3 style="margin-top:0;">Objectives Scorecard</h3>
+      <div id="objectives-scorecard"></div>
+
+      <label class="field" style="margin-top:20px;">Lessons Learned
+        <textarea id="input-lessons-learned" rows="3" placeholder="What should change in your program as a result of this exercise?"></textarea>
+      </label>
+
+      <h3>Follow-Up Actions</h3>
+      <div class="table-scroll">
+        <table class="data-table">
+          <thead><tr><th>Action</th><th>Owner</th><th>Due Date</th><th>Status</th><th></th></tr></thead>
+          <tbody id="followup-body"></tbody>
+        </table>
+      </div>
+      <button class="btn btn-secondary btn-sm" id="btn-add-followup" style="margin-top:10px;">+ Add Follow-Up Action</button>
+
+      <div class="btn-row split" style="margin-top:24px;">
+        <button class="btn btn-secondary" id="btn-export-json">Export Progress (.json)</button>
+        <div style="display:flex; gap:10px;">
+          <button class="btn btn-secondary" id="btn-export-report">Export Report (.doc)</button>
+          <button class="btn btn-primary" id="btn-complete-exercise">Mark Exercise Complete</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="data/scenarios.js"></script>
+<script src="js/app.js"></script>
+<script src="js/export-doc.js"></script>
+</body>
+</html>
