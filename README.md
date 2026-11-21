@@ -2,6 +2,8 @@
 
 A free, web-based tool for running structured OT/ICS cybersecurity tabletop exercises. No build step, no backend.
 
+**Live:** https://tjackson8817.github.io/OT-Tabletop-Exercise-Generator/ · **Version 1.1** (November 2026)
+
 **Built by Sale Fish Marketing and Consulting.**
 
 ---
@@ -12,10 +14,10 @@ A free, web-based tool for running structured OT/ICS cybersecurity tabletop exer
 - **Progressive injects** — each scenario unfolds across 3-4 timed injects (e.g., T+0, T+30 min, T+2 hr), each with 2-3 facilitator discussion prompts designed to test a specific capability (detection, containment decision-making, communication, regulatory awareness, recovery).
 - **Live facilitator notes and per-inject assessment** — record what was discussed and rate each inject as Well Handled / Partially Handled / Gap Identified as you go.
 - **An objectives scorecard** at wrap-up, covering five categories independent of the individual injects, plus a Lessons Learned field and a follow-up action tracker (action/owner/due date/status).
-- **Program Metrics on the Dashboard** — once you've completed more than one exercise, an aggregate panel shows your most common gap category, most-run scenario, and open/total follow-up actions across your whole exercise history.
+- **Program Metrics on the Dashboard** — once you've completed two or more exercises, an aggregate panel shows your most common gap category, most-run scenario, and open/total follow-up actions across your whole exercise history.
 - **A full exportable Word report** — exercise summary, the complete inject-by-inject record (text, prompts, facilitator notes, assessment), the objectives scorecard, lessons learned, follow-up actions, and a sign-off block.
-- **Works fully offline.** No external JS dependencies.
-- **All data stays in your browser.** No server, no account, no analytics.
+- **Works offline.** No external JS dependencies. The only outside request is for web fonts (Google Fonts); offline, it falls back to system fonts.
+- **All data stays in your browser.** No server, no account, no analytics. Nothing you enter is sent anywhere.
 
 ## Quick start
 
@@ -45,7 +47,7 @@ js/export-doc.js         Generates the Word-compatible exercise report
 
 | Scenario | Linked Playbook | Modeled On |
 |---|---|---|
-| Unrecognized Remote Session | Unauthorized Remote Access | Oldsmar, FL water treatment incident (2021) |
+| Unrecognized Remote Session | Unauthorized Remote Access | Oldsmar, FL water treatment incident, as reported in 2021* |
 | The Phantom Setpoint | Unauthorized Control Command | Stuxnet's falsified-readings pattern |
 | Silent Alarm | Inhibit Response Function Activity | TRITON/TRISIS (2017) |
 | Quiet Footsteps | Suspected Discovery Activity | Havex / Dragonfly campaign |
@@ -53,7 +55,19 @@ js/export-doc.js         Generates the Word-compatible exercise report
 | Grid Down (Power & Utilities only) | SIS-Adjacent Event | 2016 Kyiv substation attack (Industroyer/CrashOverride) |
 | Supply Chain Surprise | Generic First Response (No Clean Match) | PIPEDREAM/INCONTROLLER disclosure (2022) |
 
+\* In 2023 Oldsmar's former city manager said the event was most likely employee error rather than an intrusion; the scenario uses the incident as originally reported.
+
 All scenarios are fictionalized/generalized for exercise purposes — no scenario reproduces the real incident's specific technical details, just the general shape of what happened, adapted into a discussion exercise.
+
+## What's new in v1.1 (November 2026)
+
+- Changing industry clears a scenario that doesn't fit it (you could previously start "Grid Down" tagged as Chemical).
+- The default title follows the scenario you finally pick; a title you type is kept.
+- Cancelling a new exercise no longer leaves an empty "(untitled)" row.
+- The report cover shows the exercise date, and the industry is spelled out ("Power & Utilities", not "P&U").
+- Import checks each exercise and fills in missing fields, so a damaged or older backup can't break the Dashboard; an unknown scenario prompts you to pick one.
+- Program Metrics appear once two exercises are complete.
+- Oldsmar scenario notes the 2023 employee-error statement.
 
 ## Extending the scenario library
 
